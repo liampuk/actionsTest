@@ -10,7 +10,7 @@ jobs:
       - name : GITHUB CONTEXT
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+        run: echo "$GITHUB_CONTEXT.head_ref"
 
       - name: get commit message
         run: |
