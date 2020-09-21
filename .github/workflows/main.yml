@@ -13,4 +13,4 @@ jobs:
           PULL_NUM: ${{ github.event.number }}
         run: echo "$PR_BODY"
       - name : update pr
-        run: $(curl --user "liampuk" --request PATCH --data '{"body":"update-body-test"}' https://api.github.com/repos/liampuk/actionsTest/pulls/$PULL_NUM)
+        run: $(curl --user "liampuk" --request PATCH --data '{"body":"update-body-test"}' https://api.github.com/repos/liampuk/actionsTest/pulls/${{ github.event.number }})
