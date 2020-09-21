@@ -18,4 +18,4 @@ jobs:
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --request PATCH \
           --data '{"body":"update-body-test"}' \
-          https://api.github.com/repos/liampuk/actionsTest/pulls/$PULL_NUM
+          https://api.github.com/repos/liampuk/actionsTest/pulls/${{ env.PULL_NUM }} 
