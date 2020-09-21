@@ -7,7 +7,10 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name : GITHUB CONTEXT
+      - name : get pr body
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
+          PULL_NUM: ${{ github.event.number }}
         run: echo "$PR_BODY"
+      - name : update pr
+        run: $(curl --user "liampuk" --header  --request PATCH --data '{"body":"update-body-test"}' https://api.github.com/repos/liampuk/actionsTest/pulls/$PULL_NUM)
