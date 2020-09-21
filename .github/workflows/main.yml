@@ -13,4 +13,9 @@ jobs:
           PULL_NUM: ${{ github.event.number }}
         run: echo "$PR_BODY"
       - name : update pr
-        run: $(curl --user "liampuk" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' --request PATCH --data '{"body":"update-body-test"}' https://api.github.com/repos/liampuk/actionsTest/pulls/3)
+        run: |
+          curl --user "liampuk" \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          --request PATCH \
+          --data '{"body":"update-body-test"}' \
+          https://api.github.com/repos/liampuk/actionsTest/pulls/${{ PULL_NUM }}
