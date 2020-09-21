@@ -17,5 +17,5 @@ jobs:
           curl --user "liampuk" \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --request PATCH \
-          --data '{"body":"update-body-test"}' \
-          https://api.github.com/repos/liampuk/actionsTest/pulls/${{ PULL_NUM }} 
+          --data '{"body":"${{ env.PR_BODY }}_updated"}' \
+          https://api.github.com/repos/liampuk/actionsTest/pulls/${{ github.event.number }} 
