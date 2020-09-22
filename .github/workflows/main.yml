@@ -6,9 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name : set var
+        run: |
+          echo ::set-env name=PR_BODY::$(grep -E '(Terraform will perform|Plan: |\ *#).*' <<< "${{ github.event.pull_request.body }}")
       - name : update pr
-        env: 
-          PR_BODY: test
         run: |
           curl --user "liampuk" \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
