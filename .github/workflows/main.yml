@@ -8,11 +8,11 @@ jobs:
       - uses: actions/checkout@v1
       - name : get pr body
         run : |
-          pr-body = "$(echo "${{ github.event.pull_request.body }}" | grep -E '(Terraform will perform|Plan: |\ *#).*')"
+          echo ::set-env name=PR_BODY::$(echo "${{ github.event.pull_request.body }}" | grep -E '(Terraform will perform|Plan: |\ *#).*')
       - name : update pr
         run : |
           curl --user "liampuk" \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --request PATCH \
-          --data '{"body": echo "$pr-body"}' \
+          --data '{"body": echo "$PR_BODY"}' \
           https://api.github.com/repos/liampuk/actionsTest/pulls/${{ github.event.number }} 
