@@ -11,7 +11,7 @@ jobs:
           echo "$(echo "${{ github.event.pull_request.body }}" | grep -E '(Terraform will perform|Plan: |\ *#).*')" > original-pr-body
       - name : set var
         run: |
-          echo ::set-env name=PR_BODY::"$(<original-pr-body)"
+          echo ::set-env name=PR_BODY::$(echo "$(<original-pr-body)")
       - name : update pr
         run : |
           curl --user "liampuk" \
