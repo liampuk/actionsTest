@@ -14,5 +14,5 @@ jobs:
           curl --user "liampuk" \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --request PATCH \
-          --data '{"body": $(cat pr-body)}' \
+          --data '{"body": echo "$(cat pr-body)"}' \
           https://api.github.com/repos/liampuk/actionsTest/pulls/${{ github.event.number }} 
