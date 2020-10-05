@@ -11,11 +11,11 @@ jobs:
           echo "$(echo "${{ github.event.pull_request.body }}" | grep -E '(Terraform will perform|Plan: |\ *#).*')" > original-pr-body
       - name : set var
         run: |
-          echo ::set-env name=PR_BODY::$(cat original-pr-body)
+          echo ::set-env name=PR_BODY::$(<original-pr-body)
       - name : update pr
         run : |
           curl --user "liampuk" \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --request PATCH \
-          --data '{"body": "$(echo "${{ github.event.pull_request.body }}" | grep -E '(Terraform will perform|Plan: |\ *#).*')"}' \
+          --data '{"body": "${{ env.PR_BODY }}"}' \
           https://api.github.com/repos/liampuk/actionsTest/pulls/${{ github.event.number }} 
