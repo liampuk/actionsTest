@@ -1,21 +1,31 @@
-name: commit message test
-on: pull_request
+
+name: Terraform Formatter
+
+on:
+  pull_request
 
 jobs:
-  parse-pr:
+  format-pr:
+    name: Format PR
     runs-on: ubuntu-latest
+    outputs:
+      formatted_pr: ${{ steps.format_pr.outputs.formatted_pr }}
     steps:
-      - uses: actions/checkout@v1
-      - name : get pr body
-        run : |
-          echo "$(echo "${{ github.event.pull_request.body }}" | grep -E '(Terraform will perform|Plan: |\ *#).*')" > original-pr-body
-      - name : set var
+      - id: format_pr
         run: |
-          echo ::set-env name=PR_BODY::"$(echo "$(<original-pr-body)")"
-      - name : update pr
+          readonly local formatted_pr=$(echo "${{ github.event.pull_request.body }}" | grep -E '(Terraform will perform|Plan: |\ *#).*')
+          echo ::set-output name=formatted_pr::$formatted_pr
+
+  update-pr:
+    name: Update PR
+    runs-on: ubuntu-latest
+    needs: format-pr
+    if: ${{ needs.format-pr.outputs.formatted_pr }}
+    steps:
+      - name: Curl
         run : |
           curl --user "liampuk" \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --request PATCH \
-          --data '{"body": "${{ $(echo "$(<original-pr-body)") }}"}' \
+          --data '{"body": "${{ needs.format-pr.outputs.formatted_pr }}"}' \
           https://api.github.com/repos/liampuk/actionsTest/pulls/${{ github.event.number }} 
