@@ -18,17 +18,8 @@ jobs:
           formatted_pr="${formatted_pr//$'\n'/'%0A'}"
           formatted_pr="${formatted_pr//$'\r'/'%0D'}"
           echo ::set-output name=formatted_pr::$formatted_pr
-
-  update-pr:
-    name: Update PR
-    runs-on: ubuntu-latest
-    needs: format-pr
-    if: ${{ needs.format-pr.outputs.formatted_pr }}
-    steps:
-      - name: Curl
-        run : |
           curl --user "liampuk" \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --request PATCH \
-          --data '{"body": "${{ needs.format-pr.outputs.formatted_pr }}"}' \
+          --data '{"body": "${formatted_pr}"}' \
           https://api.github.com/repos/liampuk/actionsTest/pulls/${{ github.event.number }} 
