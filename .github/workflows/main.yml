@@ -13,7 +13,7 @@ jobs:
       - id: format_pr
         run: |
           declare formatted_pr=$(echo "${{ github.event.pull_request.body }}" | grep -E '(Terraform will perform|Plan: |\ *#).*')
-          formatted_pr="\\\`\\\`\\\`${formatted_pr//'%'/'%25'}\\\`\\\`\\\`"
+          formatted_pr="\\`\\`\\`${formatted_pr//'%'/'%25'}\\`\\`\\`"
           formatted_pr="${formatted_pr//$'\n'/'%0A'}"
           formatted_pr="${formatted_pr//$'\r'/'%0D'}"
           echo ::set-output name=formatted_pr::$formatted_pr
